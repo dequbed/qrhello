@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block header %}
+    <title>{% block title %}Register to qrhello{% endblock %}</title>
+<h1>Hello</h1>
+{% endblock %}
+
+{% block content %}
+<form method="post">
+    <label for="name">Name</label>
+    <input name="name" id="name" required />
+    <label for="email">E-Mail</label>
+    <input name="email" id="email" required />
+    <input type="submit" value="Register">
+</form>
+{% endblock %}
+
+

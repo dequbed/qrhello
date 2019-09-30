@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block header %}
+<title>{% block title %}Reserviere {{item_id}}{% endblock %}</title>
+{% endblock %}
+
+{% block content %}
+{% if reserved %}
+    Currently reserved by {{reserved_by}}. Sure you want to take over?
+    <form method="post">
+        <input type="submit" value="Übernehmen">
+    </form>
+{% else %}
+    <form method="post">
+        <input type="submit" value="Reservieren">
+    </form>
+{% endif %}
+{% endblock %}
