@@ -15,6 +15,8 @@ def hallo():
 
 @app.route('/l/goodbye')
 def goodbye():
+    # TODO: Abfragen der noch gehaltenen Items & Wiedergabe als Liste mit Wiki-Links.
+    # Falls nichts mehr offen ist --> huldvolle Verabschiedung & Frage, ob alles okay war --> mailto:tasso.mulzer@beuth-hochschule.de.
     return render_template("goodbye.html")
 
 @app.route('/l/i/<string:item_id>', methods=['GET', 'POST'])
