@@ -13,9 +13,9 @@ def hallo():
         email = request.cookies.get("email")
         return render_template("hallo.html", name=name, email=email)
 
-@app.route('/l/tschuess')
-def tschuess():
-    return render_template("tschuess.html")
+@app.route('/l/goodbye')
+def goodbye():
+    return render_template("goodbye.html")
 
 @app.route('/l/i/<string:item_id>', methods=['GET', 'POST'])
 def reserve_item(item_id):
@@ -74,7 +74,7 @@ def register():
             if not email:
                 raise ValueError("Email darf nicht leer sein")
             if not validate_email(email):
-                raise ValueError("Ungültiges Email-format: %s" % email)
+                raise ValueError("Ungültiges Email-Format: %s" % email)
 
             # Most URLs set the 'return_to'.
             redirect_to = request.args.get('return_to')
