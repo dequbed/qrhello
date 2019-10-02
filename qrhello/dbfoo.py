@@ -80,6 +80,12 @@ class Sqlite(DB):
             c.execute("SELECT name, email FROM Leihe WHERE item=? AND returned_time IS NULL", (item_id,))
             return c.fetchone()
 
+    def still_claimed(self, name):
+        with sqlite3.connect(self.filename) as conn:
+            c = conn.cursor()
+            c.execute("SELECT item FROM Leihe WHERE name=? AND returned_time IS NULL", (name,))
+            return c.fetchall()
+
     def claim(self, item_id, name, email):
         self.return_now(item_id)
         with sqlite3.connect(self.filename) as conn:
