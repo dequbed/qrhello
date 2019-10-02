@@ -5,6 +5,10 @@
 
 {% block content %}
     <h1>Hallo!</h1>
+    Hallo {{ name }}
+    Wenn wir dich erreichen wollen, werden wir das unter der E-Mail-Addresse <a href="mailto:{{ email }}">{{ email }}</a> versuchen.
+    Stimmt so nicht? <a href="{{ url_for("register") + "?return_to=/l/i/hallo" }}">Hier gehts zur Seite zum Anpassen</a>
+    Wir wünschen dir viel Spaß im FVM-Labor. Bei Fragen werde Dich jederzeit an Deinen Betreuer oder an die Laboringeneure.
 {% endblock %}
 
 

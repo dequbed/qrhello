@@ -66,8 +66,14 @@ def register():
             # Invalid form; was either missing name or email
             return "Missing %s" % e, 400
     else:
-        # GET request => Send the register form
-        return render_template("register.html")
+        name = request.cookies.get("name")
+        email = request.cookies.get("email")
+
+        if name is None or email is None:
+            # GET request => Send the register form
+            return render_template("register.html", cookies_set=False)
+        else:
+            return render_template("register.html", cookies_set=True, name=name, email=email)
 
 @app.route('/l/ueber')
 def about():
