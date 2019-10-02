@@ -4,14 +4,43 @@
 {% endblock %}
 
 {% block content %}
+<form method="post">
+<style coped>
+    .button-success,
+    .button-warning {
+        color: white;
+        border-radius: 4px;
+        text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+    }
+
+    .button-success {
+        background: rgb(28, 184, 65); /* this is a green */
+    }
+
+    .button-warning {
+        background: rgb(223, 117, 20); /* this is an orange */
+    }
+</style>
 {% if reserved %}
-    Currently reserved by {{reserved_by}}. Sure you want to take over?
-    <form method="post">
-        <input type="submit" value="Übernehmen">
-    </form>
+    {% if by_me %}
+        <p>
+            Das ist derzeit für dich eingetragen. Wenn du fertig bist und dich wieder austragen möchtest klicke hier:
+        </p>
+        <button type="submit" class="pure-button button-success">Zurückgeben</button>
+    {% else %}
+        <p>
+            Das ist derzeit von {{reserved_by}} reserviert. Falls du dir ganz
+            sicher bist das die Person das nicht mehr verwendet sondern nur
+            vergessen hat sich wieder auszutragen kannst du das Objekt
+            übernehmen.
+        </p>
+        <button type="submit" class="pure-button button-warning">Übernehmen</button>
+    {% endif %}
 {% else %}
-    <form method="post">
-        <input type="submit" value="Reservieren">
-    </form>
+    <p>
+        Das wird derzeit nicht verwendet. Fall du es reservieren möchtest klicke hier:
+    </p>
+    <button type="submit" class="pure-button pure-button-primary">Reservieren</button>
 {% endif %}
+</form>
 {% endblock %}

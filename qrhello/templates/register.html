@@ -6,23 +6,51 @@
 
 {% block content %}
 
-<form method="post" class="pure-form pure-form-stacked">
     {% if cookies_set %}
-    <label for="name">Name</label>
-    <input name="name" value="{{ name }}" required />
+        <p>
+        Hallo, hier sind die derzeit gesetzen Werte. Zum ändern die Felder editieren und auf "Speichern" drücken.
+        </p>
+        <form method="post" class="pure-form pure-form-stacked">
+            <label for="name">Name</label>
+            <input name="name" value="{{ name }}" required />
 
-    <label for="email">E-Mail</label>
-    <input name="email" type="email" value="{{ email }}" required />
+            <label for="email">E-Mail</label>
+            <input name="email" type="email" value="{{ email }}" required />
+
+            <button type="submit" class="pure-button pure-button-primary">Speichern</button>
+        </form>
+
+        <p>
+            Solltest du die gesetzen Werte komplett löschen wollen musst du deinem Browser sagen das er Cookies für diese Website löschen soll. Das geht bei jedem Browser etwas anders, wir empfehlen einen kurzen Blick auf Google oder eine andere Suchmaschine deines Misstrauens.
+        </p>
     {% else %}
-    <label for="name">Name</label>
-    <input name="name" placeholder="Name" required />
 
-    <label for="email">E-Mail</label>
-    <input name="email" type="email" placeholder="Email" required />
+        <p>
+            Hallo "Fremdling"
+        </p>
+        <p>
+            Um im Labor halbwegs den Überblick zu behalten, würden wir gerne wissen wer Du bist.
+        </p>
+        <p>Damit Du nicht jedes Mal Deine Daten eingeben musst, werden wir beim Klick auf "Anmelden" zwei Cookies in Deinem Browser setzen.
+        <form method="post" class="pure-form pure-form-stacked">
+            <label for="name">Name</label>
+            <input name="name" placeholder="Name" required />
+
+            <label for="email">E-Mail</label>
+            <input name="email" type="email" placeholder="Email" required />
+
+            <button type="submit" class="pure-button pure-button-primary">Speichern</button>
+        </form>
+        <p>Die Cookies werden ein Semester lang gültig sein und ermöglichen uns, Dich bei Rückfragen zu erreichen.
+          <p>Solltest Du wg. dem Datenschutz Bedenken haben - im Feld "Name" kannst Du eintragen, was Du möchtest. Natürlich freuen wir uns, wenn wir mit Hilfe des Feldes eine kleine Merk-Hilfe haben wenn wir Dich beim Namen ansprechen möchten.
+          <p>Im Feld "EMail" muss aber eine EMail-Adresse stehen, unter der wir Dich gut erreichen können - an der Stelle bestehen wir darauf, dass Du erreichbar bist.
+          <p>Wenn Du im Labor (außerhalb von Lehrveranstaltungen die im Stundenplan des FVM-Labors angesetzt sind) Dinge im Rahmen des freien Übens verwendest, gehst Du jeweils mit dem Labor einen kleinen Leihvertrag ein. Das System mit den QR-Codes vereinfacht diesen Prozess für uns alle.
+          <p>Es sollte selbstverständlich sein, dass Du auf die Werkzeuge und Einrichtungen die Du nutzt achtest, nichts beschädigst und beim Gehen Deinen Arbeitsplatz sauber und aufgeräumt hinterlässt. Falls doch etwas kaputt geht, wird Dir sicher nicht der Kopf abgerissen - aber Du hast Verantwortung für die von Dir verwendeten Dinge übernommen und daher kann es durchaus sein, dass Du für einen Schaden den Du verursacht hast aufkommen musst. Es schadet nicht, Deine private Haftpfichtversicherung im Vorfeld zu fragen, in wie weit sie in einem solchen Fall eintritt. Bei manchen (gerade den teureren und empfindlicheren) Geräten und Maschinen wollen wir bevor Du diese Dinge nutzen darfst auch gerne eine bestätigte Haftpflichtversicherung sehen.
+          <p>Genaueres steht in den Ausleihbedingungen des FVM-Labors, die Du sicher bereits kennst.
+          <p>Um das nochmal klar zusammenzufassen: Es ist verboten, im Labor Dinge mit QR-Code zu nutzen, ohne sie mit dem QR-System auszutragen.</p>
+          <p>Sobald der nächste ein Ding verwendet hat, wird kurz danach der vorherige Nutzer gelöscht. So ist sichergestellt, dass Deine Daten auch wieder aus dem System verschwinden.</p>
     {% endif %}
 
-    <button type="submit" class="pure-button pure-button-primary">Speichern</button>
-</form>
 {% endblock %}
 
 
