@@ -27,6 +27,12 @@ class DB:
         """
         raise NotImplementedError("'claimed' is required to be implemented on a subclass")
 
+    def still_claimed(self, name):
+        """
+        Returns (item_id) of the items, the person has still claimed. None if there is no such item.
+        """
+        raise NotImplementedError("'still_claimed' is required to be implemented on a subclass")
+
 
     #
     # Utility functions which have a default implementation
@@ -79,6 +85,12 @@ class Sqlite(DB):
             c = conn.cursor()
             c.execute("SELECT name, email FROM Leihe WHERE item=? AND returned_time IS NULL", (item_id,))
             return c.fetchone()
+
+    def still_claimed(self, name):
+        with sqlite3.connect(self.filename) as conn:
+            c = conn.cursor()
+            c.execute("SELECT item FROM Leihe WHERE name=? AND returned_time IS NULL", (name,))
+            return c.fetchall()
 
     def claim(self, item_id, name, email):
         self.return_now(item_id)
