@@ -13,14 +13,16 @@ def hallo():
         email = request.cookies.get("email")
         return render_template("hallo.html", name=name, email=email)
 
+
 @app.route('/l/goodbye')
 def goodbye():
     # TODO: Abfragen der noch gehaltenen Items & Wiedergabe als Liste mit Wiki-Links.
     # Falls nichts mehr offen ist --> huldvolle Verabschiedung & Frage, ob alles okay war --> mailto:tasso.mulzer@beuth-hochschule.de.
     return render_template("goodbye.html")
 
+
 @app.route('/l/i/<string:item_id>', methods=['GET', 'POST'])
-def reserve_item(item_id):
+def use_item(item_id):
     # In any case we need those cookies set
     if not request.cookies.get("name"):
         return redirect(url_for("register") + "?return_to=/l/i/" + item_id)
@@ -31,17 +33,17 @@ def reserve_item(item_id):
     if request.method == 'GET':
         claimant = db.claimed(item_id)
         if claimant is not None:
-            reserved = True
-            (reserved_by, cmail) = claimant
+            used = True
+            (used_by, cmail) = claimant
 
             email = request.cookies.get("email")
             # by_me :: Boolean
             by_me = email == cmail
         else:
-            reserved = False
-            reserved_by = None
+            used = False
+            used_by = None
 
-        return render_template("reserveitem.html", item_id=item_id, reserved=reserved, reserved_by=reserved_by, by_me=by_me)
+        return render_template("useitem.html", item_id=item_id, used=used, used_by=used_by, by_me=by_me)
     else:
         name = request.cookies.get("name")
         email = request.cookies.get("email")
@@ -53,12 +55,13 @@ def reserve_item(item_id):
             is_self = email == cmail
             if is_self:
                 db.return_now(item_id)
-                return redirect(url_for('reserve_item', item_id=item_id))
+                return redirect(url_for('use_item', item_id=item_id))
 
         db.claim(item_id, name, email)
 
-        # Method is POST, so they're either trying to reserve the item or take over the item.
-        return redirect(url_for('reserve_item', item_id=item_id))
+        # Method is POST, so they're either trying to use the item or take over the item.
+        return redirect(url_for('use_item', item_id=item_id))
+
 
 @app.route('/l/register', methods=['GET', 'POST'])
 def register():
@@ -108,10 +111,12 @@ def register():
         else:
             return render_template("register.html", cookies_set=True, name=name, email=email)
 
+
 @app.route('/l/ueber')
 def about():
     name = request.cookies.get("name")
     return render_template('about.html', name=name)
 
-def reserved_by_item(item_id):
-    return qrhello.dbfoo.sql_is_reserved(item_id)
+
+def used_by_item(item_id):
+    return qrhello.dbfoo.sql_is_used(item_id)

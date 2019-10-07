@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block header %}
-<title>{% block title %}Reserviere {{item_id}}{% endblock %}</title>
+<title>{% block title %}Nutze {{item_id}}{% endblock %}</title>
 {% endblock %}
 
 {% block content %}
@@ -21,15 +21,18 @@
         background: rgb(223, 117, 20); /* this is an orange */
     }
 </style>
-{% if reserved %}
+{% if used %}
     {% if by_me %}
         <p>
             Das ist derzeit für dich eingetragen. Wenn du fertig bist und dich wieder austragen möchtest klicke hier:
         </p>
         <button type="submit" class="pure-button button-success">Zurückgeben</button>
+
+    <p>Wenn Du genauere Informationen über das Ding haben möchtest, kann Dir evtl. dort geholfen werden:<br/>
+        <a href="http://141.64.71.65/wiki/index.php/{{ item_id }}">Labor-Wiki, {{ item_id }}</a> </p>
     {% else %}
         <p>
-            Das ist derzeit von {{reserved_by}} reserviert. Falls du dir ganz
+            Das ist derzeit von {{ used_by }} genutzt. Falls du dir ganz
             sicher bist das die Person das nicht mehr verwendet sondern nur
             vergessen hat sich wieder auszutragen kannst du das Objekt
             übernehmen.
@@ -38,9 +41,9 @@
     {% endif %}
 {% else %}
     <p>
-        Das wird derzeit nicht verwendet. Fall du es reservieren möchtest klicke hier:
+        Das wird derzeit nicht verwendet. Fall du es nutzen möchtest klicke hier:
     </p>
-    <button type="submit" class="pure-button pure-button-primary">Reservieren</button>
+    <button type="submit" class="pure-button pure-button-primary">Nutzen</button>
 
     <p>Wenn Du genauere Informationen über das Ding haben möchtest, kann Dir evtl. dort geholfen werden:
         <a href="http://141.64.71.65/wiki/index.php/{{ item_id }}">Labor-Wiki, {{ item_id }}</a> </p>
