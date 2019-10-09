@@ -4,6 +4,7 @@ from qrhello import app, db
 
 import qrhello.dbfoo
 
+@app.route('/')
 @app.route('/l/hello')
 @app.route('/l/hallo')
 def hallo():
