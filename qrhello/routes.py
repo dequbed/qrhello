@@ -22,7 +22,7 @@ def hallo():
 def goodbye():
     # TODO: Abfragen der noch gehaltenen Items & Wiedergabe als Liste mit Wiki-Links.
     # Falls nichts mehr offen ist --> huldvolle Verabschiedung & Frage, ob alles okay war --> mailto:tasso.mulzer@beuth-hochschule.de.
-    return render_template("aufwiedersehen.html")
+    return render_template("bye.html")
 
 
 @app.route('/l/i/<string:item_id>', methods=['GET', 'POST'])
