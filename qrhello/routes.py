@@ -4,6 +4,7 @@ from qrhello import app, db
 
 import qrhello.dbfoo
 
+@app.route('/l/hello')
 @app.route('/l/hallo')
 def hallo():
     if not request.cookies.get("name"):
@@ -14,11 +15,14 @@ def hallo():
         return render_template("hallo.html", name=name, email=email)
 
 
+@app.route('/l/bye')
 @app.route('/l/goodbye')
+@app.route('/l/wiedersehen')
+@app.route('/l/aufwiedersehen')
 def goodbye():
     # TODO: Abfragen der noch gehaltenen Items & Wiedergabe als Liste mit Wiki-Links.
     # Falls nichts mehr offen ist --> huldvolle Verabschiedung & Frage, ob alles okay war --> mailto:tasso.mulzer@beuth-hochschule.de.
-    return render_template("goodbye.html")
+    return render_template("aufwiedersehen.html")
 
 
 @app.route('/l/i/<string:item_id>', methods=['GET', 'POST'])
