@@ -2,7 +2,6 @@ from flask import make_response, request, redirect, url_for, render_template
 from validate_email import validate_email
 
 from qrhello import app, db
-from qrhello.tablefoo import ItemTable
 
 import qrhello.dbfoo
 
