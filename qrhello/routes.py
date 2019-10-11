@@ -5,6 +5,7 @@ from qrhello import app, db
 
 import qrhello.dbfoo
 
+
 @app.route('/')
 @app.route('/l/hello')
 @app.route('/l/hallo')
@@ -17,16 +18,29 @@ def hallo():
         return render_template("hallo.html", name=name, email=email)
 
 
-@app.route('/l/bye')
+@app.route('/l/bye', methods=['GET', 'POST'])
 @app.route('/l/goodbye')
 @app.route('/l/tschuess')
 @app.route('/l/wiedersehen')
 @app.route('/l/aufwiedersehen')
 def goodbye():
-    # TODO: Abfragen der noch gehaltenen Items & Wiedergabe als Liste mit Wiki-Links.
-    # Falls nichts mehr offen ist --> huldvolle Verabschiedung & Frage, ob alles okay war --> mailto:tasso.mulzer@beuth-hochschule.de.
-    return render_template("bye.html")
+    # In any case we need those cookies set
+    if not request.cookies.get("name"):
+        return redirect(url_for("register") + "?return_to=/l/bye")
 
+    name = request.cookies.get("name")
+    email = request.cookies.get("email")
+    db = qrhello.db
+    sc = db.still_claimed(email)
+
+    # Again, GET means trying to get the form
+    if request.method == 'GET':
+        # Falls nichts mehr offen ist --> huldvolle Verabschiedung & Frage, ob alles okay war --> mailto:tasso.mulzer@beuth-hochschule.de.
+        return render_template("bye.html", name=name, items=sc)
+    else:   # POST // Zurückgeben
+        for item in sc:
+            db.return_now(item_id=item[0])
+        return redirect(url_for("goodbye"))
 
 @app.route('/l/i/<string:item_id>', methods=['GET', 'POST'])
 def use_item(item_id):
@@ -127,8 +141,13 @@ def about():
 @app.route('/l/claimed')
 @app.route('/l/reserved')
 def reserved():
+    # In any case we need those cookies set
+    if not request.cookies.get("name"):
+        return redirect(url_for("register") + "?return_to=/l/claimed")
+
     name = request.cookies.get("name")
-    sc = db.still_claimed(name)
+    email = request.cookies.get("email")
+    sc = db.still_claimed(email)
     return render_template('claimed.html', name=name, items=sc)
     pass
 
