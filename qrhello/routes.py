@@ -1,6 +1,8 @@
-from flask import make_response, request, redirect, url_for, render_template, flash
+from flask import make_response, request, redirect, url_for, render_template
 from validate_email import validate_email
+
 from qrhello import app, db
+from qrhello.tablefoo import ItemTable
 
 import qrhello.dbfoo
 
@@ -128,6 +130,8 @@ def about():
 def reserved():
     name = request.cookies.get("name")
     sc = db.still_claimed(name)
+    table = ItemTable(sc)
+    return render_template('claimed.html', name=name, items=sc)
     pass
 
 def used_by_item(item_id):
