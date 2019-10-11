@@ -6,17 +6,19 @@
 
 {% block content %}
     <p>
-    Hallo {{ name }}, hier sind die derzeit noch für Dich reservierten Dinge.
+    Hallo {{ name }}, hier sind die derzeit noch für Dich reservierten Dinge:
     </p>
-    <table>
+    <table class="pure-table-bordered">
+        <tr><th> InventarNr.&nbsp;</th><th>&nbsp;</th><th>&nbsp;Bezeichnung&nbsp;</th><th>&nbsp;Typ&nbsp;</th></tr>
 {% for item in items %}
     <tr>
-    <td>{{item[0]}}</td><td>&nbsp;</td>
+        <td>{{item[0]}}</td>
+        <td>&nbsp;</td>
         <td>{{item[1]}}</td>
         <td>{{item[2]}}</td>
-    </td>
+    </tr>
 {% endfor %}
-
+    </table>
 {% endblock %}
 
 

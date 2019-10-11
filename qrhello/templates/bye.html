@@ -1,1 +1,48 @@
-GoodBye.
+{% extends "base.html" %}
+{% block header %}
+<!--    <title>{% block title %}Aktuell genutzte Dinge{% endblock %}</title>
+<h1>Aktuell genutzte Dinge:</h1>-->
+{% endblock %}
+
+{% block content %}
+    <form method="post">
+    <style coped>
+    .button-success,
+    .button-warning {
+        color: white;
+        border-radius: 4px;
+        text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+    }
+
+    .button-success {
+        background: rgb(28, 184, 65); /* this is a green */
+    }
+
+    .button-warning {
+        background: rgb(223, 117, 20); /* this is an orange */
+    }
+    </style>
+    <p>Auf Wiedersehen, {{ name }}.</p>
+
+    {% if items %}
+        <p>Du bist noch für folgende Dinge eingetragen:</p>
+
+            <table class="pure-table-bordered">
+            <tr><th> InventarNr.&nbsp;</th><th>&nbsp;</th><th>&nbsp;Bezeichnung&nbsp;</th><th>&nbsp;Typ&nbsp;</th></tr>
+        {% for item in items %}
+            <tr>
+            <td>{{item[0]}}</td><td>&nbsp;</td>
+                <td>{{item[1]}}</td>
+                <td>{{item[2]}}</td>
+            </td>
+        {% endfor %}
+            </table>
+
+        <p>Wenn Du Dir sicher bist, dass alles sauber, unbeschädigt und aufgeräumt an seinem Platz ist, kannst Du alles auf einmal durch Klick auf den folgenden Button austragen.</p>
+        <p>Wenn etwas beschädigt ist, gib es bitte noch bei den Labormitarbeitern ab.</p>
+        <p>Wenn etwas noch nicht aufgeräumt ist .. Du weißt sicher, was zu tun ist.</p>
+        <button type="submit" class="pure-button button-success">Alles Zurückgeben</button>
+    {% endif %}
+
+</form>
+{% endblock %}
