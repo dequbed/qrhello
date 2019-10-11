@@ -19,10 +19,10 @@ def hallo():
 
 
 @app.route('/l/bye', methods=['GET', 'POST'])
-@app.route('/l/goodbye')
-@app.route('/l/tschuess')
-@app.route('/l/wiedersehen')
-@app.route('/l/aufwiedersehen')
+@app.route('/l/goodbye', methods=['GET', 'POST'])
+@app.route('/l/tschuess', methods=['GET', 'POST'])
+@app.route('/l/wiedersehen', methods=['GET', 'POST'])
+@app.route('/l/aufwiedersehen', methods=['GET', 'POST'])
 def goodbye():
     # In any case we need those cookies set
     if not request.cookies.get("name"):
@@ -37,7 +37,7 @@ def goodbye():
     if request.method == 'GET':
         # Falls nichts mehr offen ist --> huldvolle Verabschiedung & Frage, ob alles okay war --> mailto:tasso.mulzer@beuth-hochschule.de.
         return render_template("bye.html", name=name, items=sc)
-    else:   # POST // Zurückgeben
+    else:   # POST // Alles Zurückgeben
         for item in sc:
             db.return_now(item_id=item[0])
         return redirect(url_for("goodbye"))
