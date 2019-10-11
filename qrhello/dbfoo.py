@@ -1,6 +1,8 @@
 import time
 import datetime
 import sqlite3
+import psycopg2
+
 
 class DB:
     #
@@ -90,7 +92,10 @@ class Sqlite(DB):
         with sqlite3.connect(self.filename) as conn:
             c = conn.cursor()
             c.execute("SELECT item FROM Leihe WHERE name=? AND returned_time IS NULL", (name,))
-            return c.fetchall()
+            items = c.fetchall()
+        return
+
+
 
     def claim(self, item_id, name, email):
         self.return_now(item_id)

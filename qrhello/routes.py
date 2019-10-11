@@ -122,6 +122,11 @@ def about():
     name = request.cookies.get("name")
     return render_template('about.html', name=name)
 
+@app.route('/l/claimed')
+def reserved():
+    name = request.cookies.get("name")
+    sc = db.still_claimed(name)
+    pass
 
 def used_by_item(item_id):
     return qrhello.dbfoo.sql_is_used(item_id)
