@@ -18,6 +18,7 @@ def hallo():
 
 @app.route('/l/bye')
 @app.route('/l/goodbye')
+@app.route('/l/tschuess')
 @app.route('/l/wiedersehen')
 @app.route('/l/aufwiedersehen')
 def goodbye():

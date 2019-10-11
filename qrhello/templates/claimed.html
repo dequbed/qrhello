@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block header %}
+    <title>{% block title %}Aktuell genutzte Dinge{% endblock %}</title>
+<h1>Aktuell genutzte Dinge:</h1>
+{% endblock %}
+
+{% block content %}
+    <p>
+    Hallo, hier sind die derzeit für Dich reservierten Dinge.
+    </p>
+    {{ table }}
+    <form method="post" class="pure-form pure-form-stacked">
+        <label for="name">Name</label>
+        <input name="name" value="{{ name }}" required />
+
+        <label for="email">E-Mail</label>
+        <input name="email" type="email" value="{{ email }}" required />
+
+        <button type="submit" class="pure-button pure-button-primary">Speichern</button>
+    </form>
+
+{% endblock %}
+
+
