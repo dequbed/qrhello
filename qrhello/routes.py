@@ -129,7 +129,6 @@ def about():
 def reserved():
     name = request.cookies.get("name")
     sc = db.still_claimed(name)
-    table = ItemTable(sc)
     return render_template('claimed.html', name=name, items=sc)
     pass
 
