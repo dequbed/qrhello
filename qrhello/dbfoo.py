@@ -93,7 +93,18 @@ class Sqlite(DB):
             c = conn.cursor()
             c.execute("SELECT item FROM Leihe WHERE name=? AND returned_time IS NULL", (name,))
             items = c.fetchall()
-        return
+
+        with psycopg2.connect(
+                "dbname='leihs' user='leihs_reader' host='141.64.71.42' password='<PASSWORD>'") as pg2:
+                c=pg2.cursor()
+                for i in items:
+                    c.execute("""SELECT product,version FROM public.items as Items JOIN public.models as Models ON (Items.model_id = Models.Id) WHERE Inventory_Code = %s;""", i)
+                    rows = c.fetchone()
+                    if rows != None:
+                        type = (rows[0] + " " + rows[1]),
+                        items[items.index(i)] = items[items.index(i)] + type
+                    pass
+        return items
 
 
 

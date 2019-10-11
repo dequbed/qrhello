@@ -123,6 +123,7 @@ def about():
     return render_template('about.html', name=name)
 
 @app.route('/l/claimed')
+@app.route('/l/reserved')
 def reserved():
     name = request.cookies.get("name")
     sc = db.still_claimed(name)
