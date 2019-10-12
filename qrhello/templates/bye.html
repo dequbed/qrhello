@@ -24,16 +24,15 @@
     </style>
     <p>Auf Wiedersehen, {{ name }}.</p>
 
-    {% if items %}
+    {% if not_okay %}
         <p>Du bist noch für folgende Dinge eingetragen:</p>
 
             <table class="pure-table-bordered">
-            <tr><th> InventarNr.&nbsp;</th><th>&nbsp;</th><th>&nbsp;Bezeichnung&nbsp;</th><th>&nbsp;Typ&nbsp;</th></tr>
+            <tr><th> InventarNr.&nbsp;</th><th>&nbsp;</th><th>&nbsp;Bezeichnung&nbsp;</th></tr>
         {% for item in items %}
             <tr>
             <td>{{item[0]}}</td><td>&nbsp;</td>
                 <td>{{item[1]}}</td>
-                <td>{{item[2]}}</td>
             </td>
         {% endfor %}
             </table>

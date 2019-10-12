@@ -32,11 +32,12 @@ def goodbye():
     email = request.cookies.get("email")
     db = qrhello.db
     sc = db.still_claimed(email)
+    not_okay = len(sc) > 0
 
     # Again, GET means trying to get the form
     if request.method == 'GET':
         # Falls nichts mehr offen ist --> huldvolle Verabschiedung & Frage, ob alles okay war --> mailto:tasso.mulzer@beuth-hochschule.de.
-        return render_template("bye.html", name=name, items=sc)
+        return render_template("bye.html", name=name, items=sc, not_okay=not_okay)
     else:   # POST // Alles Zurückgeben
         for item in sc:
             db.return_now(item_id=item[0])
