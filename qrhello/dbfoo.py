@@ -88,6 +88,7 @@ class Sqlite(DB):
             c.execute("SELECT name, email FROM Leihe WHERE item=? AND returned_time IS NULL", (item_id,))
             return c.fetchone()
 
+
     def still_claimed(self, email):
         with sqlite3.connect(self.filename) as conn:
             c = conn.cursor()
@@ -99,7 +100,11 @@ class Sqlite(DB):
             "dbname='leihs' user='leihs_reader' host='141.64.71.42' password='<PASSWORD>'") as pg2:
                 c=pg2.cursor()
                 for i in items:
-                    c.execute("""SELECT product,version FROM public.items as Items JOIN public.models as Models ON (Items.model_id = Models.Id) WHERE Inventory_Code = %s;""", i)
+                    c.execute("""SELECT product,version 
+                        FROM public.items as Items 
+                        JOIN public.models as Models 
+                        ON (Items.model_id = Models.Id) 
+                        WHERE Inventory_Code = %s;""", i)
                     rows = c.fetchone()
                     if rows != None:
                         type = (rows[0] + " " + rows[1]),
@@ -109,13 +114,13 @@ class Sqlite(DB):
         return items
 
 
-
     def claim(self, item_id, name, email):
         self.return_now(item_id)
         with sqlite3.connect(self.filename) as conn:
             c = conn.cursor()
             c.execute('INSERT INTO Leihe VALUES (?, ?, ?, time("now"), NULL)', (item_id, name, email))
             conn.commit()
+
 
     def return_time(self, item_id, when):
         # The 'DB' class just enforces type checks
