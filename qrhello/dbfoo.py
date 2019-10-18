@@ -72,7 +72,7 @@ class Sqlite(DB):
                 ( item TEXT
                 , name TEXT
                 , email TEXT
-                , claimed_time TIMESTAMP
+                , claimed_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP 
                 , returned_time TIMESTAMP
                 )
             ''')
@@ -118,7 +118,7 @@ class Sqlite(DB):
         self.return_now(item_id)
         with sqlite3.connect(self.filename) as conn:
             c = conn.cursor()
-            c.execute('INSERT INTO Leihe VALUES (?, ?, ?, time("now"), NULL)', (item_id, name, email))
+            c.execute('INSERT INTO Leihe VALUES (?, ?, ?, datetime("now"), NULL)', (item_id, name, email))
             conn.commit()
 
 
@@ -143,5 +143,5 @@ class Sqlite(DB):
         """
         with sqlite3.connect(self.filename) as conn:
             c = conn.cursor()
-            c.execute('UPDATE Leihe SET returned_time=time("now") WHERE item=? AND returned_time IS NULL', (item_id,))
+            c.execute('UPDATE Leihe SET returned_time=datetime("now") WHERE item=? AND returned_time IS NULL', (item_id,))
             conn.commit()

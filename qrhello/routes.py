@@ -1,3 +1,4 @@
+# coding=utf-8
 from flask import make_response, request, redirect, url_for, render_template
 from validate_email import validate_email
 
@@ -13,8 +14,10 @@ def hallo():
     if not request.cookies.get("name"):
         return redirect(url_for("register") + "?return_to=" + url_for("hallo"))
     else:
+        db = qrhello.db
         name = request.cookies.get("name")
         email = request.cookies.get("email")
+        db.hello(name, email)
         return render_template("hallo.html", name=name, email=email)
 
 
@@ -38,7 +41,7 @@ def goodbye():
     if request.method == 'GET':
         # Falls nichts mehr offen ist --> huldvolle Verabschiedung & Frage, ob alles okay war --> mailto:tasso.mulzer@beuth-hochschule.de.
         return render_template("bye.html", name=name, items=sc, not_okay=not_okay)
-    else:   # POST // Alles Zurückgeben
+    else:   # POST // Alles Zurueckgeben
         for item in sc:
             db.return_now(item_id=item[0])
         return redirect(url_for("goodbye"))
