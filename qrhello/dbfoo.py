@@ -9,6 +9,15 @@ class DB:
     # Required functions to implement
     #
 
+    def hello(self, name, email):
+        """
+        Enters a new User, visiting the lab today.
+        :param name:
+        :param email:
+        :return:
+        """
+        raise NotImplementedError("'hello' is required to be implemented on a subclass")
+
     def claim(self, item_id, name, email):
         """
         Claims an item for an user, removing any previous claimant
@@ -74,10 +83,18 @@ class Sqlite(DB):
                 , email TEXT
                 , claimed_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP 
                 , returned_time TIMESTAMP
-                )
+                );
             ''')
             conn.commit()
 
+            c.execute('''
+                CREATE TABLE IF NOT EXISTS Anwesenheit
+                (name TEXT
+                , email TEXT
+                , tag DATE
+                 );
+            ''')
+            conn.commit()
     #
     # Required function implementations
     #
@@ -112,6 +129,13 @@ class Sqlite(DB):
         except:
             pass
         return items
+
+
+    def hello(self, name, email):
+        with sqlite3.connect(self.filename) as conn:
+            c = conn.cursor()
+            c.execute('INSERT INTO Anwesenheit VALUES (?, ?, date("now"))', ( name, email))
+            conn.commit()
 
 
     def claim(self, item_id, name, email):
