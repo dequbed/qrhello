@@ -109,7 +109,7 @@ class Sqlite(DB):
     def still_claimed(self, email=None, overall=False):
         with sqlite3.connect(self.filename) as conn:
             c = conn.cursor()
-            if (not overall) or (email is None):
+            if (not overall) or (email is not None):
                 c.execute("SELECT item FROM Leihe WHERE email=? AND returned_time IS NULL", (email,))
             else:
                 c.execute("SELECT item FROM Leihe WHERE returned_time IS NULL")
