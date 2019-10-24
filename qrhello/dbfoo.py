@@ -106,10 +106,10 @@ class Sqlite(DB):
             c.execute("SELECT name, email FROM Leihe WHERE item=? AND returned_time IS NULL", (item_id,))
             return c.fetchone()
 
-    def still_claimed(self, email, overall=False):
+    def still_claimed(self, email=None, overall=False):
         with sqlite3.connect(self.filename) as conn:
             c = conn.cursor()
-            if not overall:
+            if (not overall) or (email is None):
                 c.execute("SELECT item FROM Leihe WHERE email=? AND returned_time IS NULL", (email,))
             else:
                 c.execute("SELECT item FROM Leihe WHERE returned_time IS NULL")
