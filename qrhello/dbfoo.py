@@ -44,7 +44,6 @@ class DB:
         """
         raise NotImplementedError("'still_claimed' is required to be implemented on a subclass")
 
-
     #
     # Utility functions which have a default implementation
     #
@@ -66,6 +65,7 @@ class DB:
         Returns an item
         """
         self.return_time(item_id, datetime.now())
+
 
 class Sqlite(DB):
     """
@@ -95,6 +95,7 @@ class Sqlite(DB):
                  );
             ''')
             conn.commit()
+
     #
     # Required function implementations
     #
@@ -105,17 +106,19 @@ class Sqlite(DB):
             c.execute("SELECT name, email FROM Leihe WHERE item=? AND returned_time IS NULL", (item_id,))
             return c.fetchone()
 
-
-    def still_claimed(self, email):
+    def still_claimed(self, email, overall=False):
         with sqlite3.connect(self.filename) as conn:
             c = conn.cursor()
-            c.execute("SELECT item FROM Leihe WHERE email=? AND returned_time IS NULL", (email,))
+            if not overall:
+                c.execute("SELECT item FROM Leihe WHERE email=? AND returned_time IS NULL", (email,))
+            else:
+                c.execute("SELECT item FROM Leihe WHERE returned_time IS NULL")
             items = c.fetchall()
 
         try:
             with psycopg2.connect(
-            "dbname='leihs' user='leihs_reader' host='141.64.71.42' password='<PASSWORD>'") as pg2:
-                c=pg2.cursor()
+                    "dbname='leihs' user='leihs_reader' host='141.64.71.42' password='<PASSWORD>'") as pg2:
+                c = pg2.cursor()
                 for i in items:
                     c.execute("""SELECT product,version
                         FROM public.items as Items
@@ -123,20 +126,18 @@ class Sqlite(DB):
                         ON (Items.model_id = Models.Id)
                         WHERE Inventory_Code = %s;""", i)
                     rows = c.fetchone()
-                    if rows != None:
-                        type = (rows[0] + " " + rows[1]),
-                        items[items.index(i)] = items[items.index(i)] + type
+                    if rows is not None:
+                        typ = (rows[0] + " " + rows[1]),
+                        items[items.index(i)] = items[items.index(i)] + typ
         except:
             pass
         return items
 
-
     def hello(self, name, email):
         with sqlite3.connect(self.filename) as conn:
             c = conn.cursor()
-            c.execute('INSERT INTO Anwesenheit VALUES (?, ?, date("now"))', ( name, email))
+            c.execute('INSERT INTO Anwesenheit VALUES (?, ?, date("now"))', (name, email))
             conn.commit()
-
 
     def claim(self, item_id, name, email):
         self.return_now(item_id)
@@ -145,7 +146,6 @@ class Sqlite(DB):
             c.execute('INSERT INTO Leihe VALUES (?, ?, ?, datetime("now"), NULL)', (item_id, name, email))
             conn.commit()
 
-
     def return_time(self, item_id, when):
         # The 'DB' class just enforces type checks
         super.return_time()
@@ -153,7 +153,6 @@ class Sqlite(DB):
             c = conn.cursor()
             c.execute('UPDATE Leihe SET returned_time=? WHERE item=? AND returned_time IS NULL', (when, item_id))
             conn.commit()
-
 
     #
     # Optional implementations
@@ -167,5 +166,6 @@ class Sqlite(DB):
         """
         with sqlite3.connect(self.filename) as conn:
             c = conn.cursor()
-            c.execute('UPDATE Leihe SET returned_time=datetime("now") WHERE item=? AND returned_time IS NULL', (item_id,))
+            c.execute('UPDATE Leihe SET returned_time=datetime("now") WHERE item=? AND returned_time IS NULL',
+                      (item_id,))
             conn.commit()
