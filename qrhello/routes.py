@@ -155,5 +155,18 @@ def reserved():
     return render_template('claimed.html', name=name, items=sc)
     pass
 
+@app.route('/l/aufraeumen')
+@app.route('/l/cleanup')
+def reserved_overall():
+    # # In any case we need those cookies set
+    # if not request.cookies.get("name"):
+    #     return redirect(url_for("register") + "?return_to=/l/claimed")
+
+    # name = request.cookies.get("name")
+    # email = request.cookies.get("email")
+    sc = db.still_claimed(overall=True)
+    return render_template('claimed_overall.html', items=sc)
+    pass
+
 def used_by_item(item_id):
     return qrhello.dbfoo.sql_is_used(item_id)
