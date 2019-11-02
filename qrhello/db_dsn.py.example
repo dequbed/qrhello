@@ -1,2 +1,9 @@
 postgres_dsn = "dbname='<DB>' user='<USER>' host='<HOST>' password='<PASSWORD>'"
+
 sqlite_file = '/tmp/db.sqlite'
+
+influx_host = '<host>'
+influx_port = 8086
+influx_user = '<user>'
+influx_pass = '<pass>'
+influx_db = 'db'

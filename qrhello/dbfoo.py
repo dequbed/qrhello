@@ -159,8 +159,8 @@ class Sqlite(DB):
             conn.commit()
             da = c.fetchone()
 
-            i = InfluxDBClient(host='pcx43.beuth-hochschule.de', port=8086, username='openhab', password='?openhab!')
-            i.switch_database('openhab')
+            i = InfluxDBClient(host=dsn.influx_host, port=dsn.influx_port, username=dsn.influx_user, password=dsn.influx_pass)
+            i.switch_database(dsn.influx_db)
             json_body = [
                 {
                     "measurement": "qr_anwesend",
