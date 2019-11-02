@@ -2,6 +2,7 @@ import time
 import datetime
 import sqlite3
 import psycopg2
+from influxdb import InfluxDBClient
 
 import db_dsn
 
@@ -153,6 +154,22 @@ class Sqlite(DB):
             c = conn.cursor()
             c.execute('INSERT INTO Anwesenheit VALUES (?, ?, date("now"))', (name, email))
             conn.commit()
+
+            c.execute('SELECT COUNT(DISTINCT email) FROM Anwesenheit WHERE tag=date("now") GROUP BY tag')
+            conn.commit()
+            da = c.fetchone()
+
+            i = InfluxDBClient(host='pcx43.beuth-hochschule.de', port=8086, username='openhab', password='?openhab!')
+            i.switch_database('openhab')
+            json_body = [
+                {
+                    "measurement": "qr_anwesend",
+                    "fields": {
+                        "value": da[0]
+                    }
+                }
+            ]
+            i.write_points(json_body)
 
     def claim(self, item_id, name, email):
         with sqlite3.connect(self.filename) as conn:
