@@ -209,5 +209,21 @@ def reserved_overall():
     return render_template('claimed_overall.html', items=sc)
     pass
 
+@app.route('/l/anwesend')
+def here_today():
+    # In any case we need those cookies set
+    if not request.cookies.get("name"):
+        return redirect(url_for("register") + "?return_to=/l/claimed")
+
+    name = request.cookies.get("name")
+    # email = request.cookies.get("email")
+    if name == 'Tasso':
+        ht = db.here_today()
+    else:
+        ht = (None,)
+
+    return render_template('here_today.html', items=ht)
+    pass
+
 def used_by_item(item_id):
     return qrhello.dbfoo.sql_is_used(item_id)

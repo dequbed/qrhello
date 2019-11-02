@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block header %}
+<!--    <title>{% block title %}Aktuell genutzte Dinge{% endblock %}</title>
+<h1>Aktuell genutzte Dinge:</h1>-->
+{% endblock %}
+
+{% block content %}
+    <p>
+    Hier sind die Einträge zur heutigen Anwesenheit:
+    </p>
+    <table class="pure-table-bordered">
+        <tr><th> Name&nbsp;</th><th>&nbsp;</th><th>&nbsp;EMail&nbsp;</th></tr>
+{% for item in items %}
+    <tr>
+        <td>{{item[0]}}</td>
+        <td>&nbsp;</td>
+        <td>{{item[1]}}</td>
+    </tr>
+{% endfor %}
+    </table>
+{% endblock %}
+
+

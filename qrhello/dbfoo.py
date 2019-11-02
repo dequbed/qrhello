@@ -165,6 +165,12 @@ class Sqlite(DB):
             c.execute('UPDATE Leihe SET returned_time=? WHERE item=? AND returned_time IS NULL', (when, item_id))
             conn.commit()
 
+    def here_today(self):
+        with sqlite3.connect(self.filename) as conn:
+            c = conn.cursor()
+            c.execute('SELECT DISTINCT name, email FROM Anwesenheit WHERE tag=date("now")')
+            items = c.fetchall()
+        return items
     #
     # Optional implementations
     #
