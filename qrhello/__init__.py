@@ -1,6 +1,6 @@
 from flask import Flask
 
-from dbfoo import Sqlite
+from qrhello.dbfoo import Sqlite
 
 import qrhello.db_dsn as dsn
 
