@@ -82,6 +82,7 @@ def use_item(item_id):
                 db.return_now(item_id)
                 return redirect(url_for('use_item', item_id=item_id))
 
+        db.return_now(item_id)
         db.claim(item_id, name, email)
 
         # Method is POST, so they're either trying to use the item or take over the item.
@@ -117,6 +118,7 @@ def register():
             # We need to set these cookies so people don't have to do this again
             response.set_cookie("name", name)
             response.set_cookie("email", email)
+            db.hello(name, email)
             return response
 
         except KeyError as e:
