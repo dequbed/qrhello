@@ -4,7 +4,7 @@ import sqlite3
 import psycopg2
 from influxdb import InfluxDBClient
 
-import db_dsn
+import qrhello.db_dsn as dsn
 
 
 
@@ -133,7 +133,7 @@ class Sqlite(DB):
             items = c.fetchall()
 
         try:
-            with psycopg2.connect(db_dsn.postgres_dsn) as pg2:
+            with psycopg2.connect(dsn.postgres_dsn) as pg2:
                 c = pg2.cursor()
                 for i in items:
                     c.execute("""SELECT product,version
