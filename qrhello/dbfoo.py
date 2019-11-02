@@ -3,6 +3,10 @@ import datetime
 import sqlite3
 import psycopg2
 
+import db_dsn
+
+
+
 
 class DB:
     #
@@ -128,8 +132,7 @@ class Sqlite(DB):
             items = c.fetchall()
 
         try:
-            with psycopg2.connect(
-                    "dbname='leihs' user='leihs_reader' host='141.64.71.42' password='<PASSWORD>'") as pg2:
+            with psycopg2.connect(db_dsn.postgres_dsn) as pg2:
                 c = pg2.cursor()
                 for i in items:
                     c.execute("""SELECT product,version

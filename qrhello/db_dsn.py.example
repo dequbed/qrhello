@@ -1,0 +1,2 @@
+postgres_dsn = "dbname='<DB>' user='<USER>' host='<HOST>' password='<PASSWORD>'"
+sqlite_file = '/tmp/db.sqlite'
