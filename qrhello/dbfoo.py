@@ -103,7 +103,19 @@ class Sqlite(DB):
     def claimed(self, item_id):
         with sqlite3.connect(self.filename) as conn:
             c = conn.cursor()
-            c.execute("SELECT name, email FROM Leihe WHERE item=? AND returned_time IS NULL", (item_id,))
+            c.execute("SELECT name, email FROM Leihe WHERE item=? AND returned_time IS NULL ORDER BY claimed_time DESC LIMIT 1", (item_id,))
+            return c.fetchone()
+
+    def claimed_by_me(self, item_id, email):
+        with sqlite3.connect(self.filename) as conn:
+            c = conn.cursor()
+            c.execute("SELECT name, email FROM Leihe WHERE item=? AND email=? AND returned_time IS NULL", (item_id,email,))
+            return c.fetchone()
+
+    def claimed_by_else(self, item_id, email):
+        with sqlite3.connect(self.filename) as conn:
+            c = conn.cursor()
+            c.execute("SELECT name, email FROM Leihe WHERE item=? AND NOT email=? AND returned_time IS NULL", (item_id,email,))
             return c.fetchone()
 
     def still_claimed(self, email=None, overall=False):
@@ -140,7 +152,6 @@ class Sqlite(DB):
             conn.commit()
 
     def claim(self, item_id, name, email):
-        self.return_now(item_id)
         with sqlite3.connect(self.filename) as conn:
             c = conn.cursor()
             c.execute('INSERT INTO Leihe VALUES (?, ?, ?, datetime("now"), NULL)', (item_id, name, email))
@@ -158,7 +169,7 @@ class Sqlite(DB):
     # Optional implementations
     #
 
-    def return_now(self, item_id):
+    def return_now(self, item_id, email):
         """
         Marks an item as returned
 
@@ -166,6 +177,6 @@ class Sqlite(DB):
         """
         with sqlite3.connect(self.filename) as conn:
             c = conn.cursor()
-            c.execute('UPDATE Leihe SET returned_time=datetime("now") WHERE item=? AND returned_time IS NULL',
-                      (item_id,))
+            c.execute('UPDATE Leihe SET returned_time=datetime("now") WHERE item=? AND email=? AND returned_time IS NULL',
+                      (item_id,email,))
             conn.commit()

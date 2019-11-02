@@ -43,7 +43,7 @@ def goodbye():
         return render_template("bye.html", name=name, items=sc, not_okay=not_okay)
     else:   # POST // Alles Zurueckgeben
         for item in sc:
-            db.return_now(item_id=item[0])
+            db.return_now(item[0], email)
         return redirect(url_for("goodbye"))
 
 @app.route('/l/i/<string:item_id>', methods=['GET', 'POST'])
@@ -79,14 +79,53 @@ def use_item(item_id):
             email = request.cookies.get("email")
             is_self = email == cmail
             if is_self:
-                db.return_now(item_id)
+                db.return_now(item_id, email)
                 return redirect(url_for('use_item', item_id=item_id))
 
-        db.return_now(item_id)
+        db.return_now(item_id, email)
         db.claim(item_id, name, email)
 
         # Method is POST, so they're either trying to use the item or take over the item.
         return redirect(url_for('use_item', item_id=item_id))
+
+
+@app.route('/l/m/<string:item_id>', methods=['GET', 'POST'])
+def use_multi_item(item_id):
+    # In any case we need those cookies set
+    if not request.cookies.get("name"):
+        return redirect(url_for("register") + "?return_to=/l/m/" + item_id)
+    if not request.cookies.get("email"):
+        return redirect(url_for("register") + "?return_to=/l/m/" + item_id)
+
+    name = request.cookies.get("name")
+    email = request.cookies.get("email")
+
+    db = qrhello.db
+    by_me = False
+    # Again, GET means trying to get the form
+    if request.method == 'GET':
+        claimed_by_me = db.claimed_by_me(item_id, email)
+        if claimed_by_me is not None:
+            used = True
+            used_by = name
+            by_me = True
+        # claimed by someone else is of no interest for multi-items.
+        else:   # not claimed
+            used = False
+            used_by = None
+
+        return render_template("useitem.html", item_id=item_id, used=used, used_by=used_by, by_me=by_me)
+    else:
+
+        claimant = db.claimed_by_me(item_id, email)
+        if claimant:
+            db.return_now(item_id, email)
+            return redirect(url_for('use_multi_item', item_id=item_id))
+        else:
+            db.claim(item_id, name, email)
+
+        # Method is POST, so they're either trying to use the item or take over the item.
+        return redirect(url_for('use_multi_item', item_id=item_id))
 
 
 @app.route('/l/register', methods=['GET', 'POST'])
