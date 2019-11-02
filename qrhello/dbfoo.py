@@ -159,7 +159,7 @@ class Sqlite(DB):
             conn.commit()
             da = c.fetchone()
 
-            i = InfluxDBClient(host=dsn.influx_host, port=dsn.influx_port, username=dsn.influx_user, password=dsn.influx_pass)
+        with InfluxDBClient(host=dsn.influx_host, port=dsn.influx_port, username=dsn.influx_user, password=dsn.influx_pass) as i:
             i.switch_database(dsn.influx_db)
             json_body = [
                 {
