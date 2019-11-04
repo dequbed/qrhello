@@ -213,7 +213,7 @@ def reserved_overall():
 def here_today():
     # In any case we need those cookies set
     if not request.cookies.get("name"):
-        return redirect(url_for("register") + "?return_to=/l/claimed")
+        return redirect(url_for("register") + "?return_to=/l/anwesend")
 
     name = request.cookies.get("name")
     # email = request.cookies.get("email")
