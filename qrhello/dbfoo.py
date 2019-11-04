@@ -160,16 +160,16 @@ class Sqlite(DB):
             da = c.fetchone()
 
         i = InfluxDBClient(host=dsn.influx_host, port=dsn.influx_port, username=dsn.influx_user, password=dsn.influx_pass)
-            i.switch_database(dsn.influx_db)
-            json_body = [
-                {
-                    "measurement": "qr_anwesend",
-                    "fields": {
-                        "value": da[0]
-                    }
+        i.switch_database(dsn.influx_db)
+        json_body = [
+            {
+                "measurement": "qr_anwesend",
+                "fields": {
+                    "value": da[0]
                 }
-            ]
-            i.write_points(json_body)
+            }
+        ]
+        i.write_points(json_body)
 
     def claim(self, item_id, name, email):
         with sqlite3.connect(self.filename) as conn:
