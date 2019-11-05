@@ -188,8 +188,8 @@ class Sqlite(DB):
     def here_today(self):
         with sqlite3.connect(self.filename) as conn:
             c = conn.cursor()
-#            c.execute('SELECT DISTINCT name, email FROM Anwesenheit WHERE tag=date("now")')
-            c.execute('SELECT DISTINCT name FROM Anwesenheit WHERE tag=date("now")')
+            c.execute('SELECT DISTINCT name, email FROM Anwesenheit WHERE tag=date("now")')
+#            c.execute('SELECT DISTINCT name FROM Anwesenheit WHERE tag=date("now")')
             items = c.fetchall()
         return items
     #
