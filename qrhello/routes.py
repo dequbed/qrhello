@@ -217,7 +217,7 @@ def here_today():
 
     name = request.cookies.get("name")
     # email = request.cookies.get("email")
-    if name == 'Tasso':
+    if name == 'Tasso' or name == 'Norbert':
         ht = db.here_today()
     else:
         ht = (None,)
