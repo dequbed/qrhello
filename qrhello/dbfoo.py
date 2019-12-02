@@ -72,6 +72,23 @@ class DB:
         self.return_time(item_id, datetime.now())
 
 
+def typ_from_id(item_id):
+    try:
+        with psycopg2.connect(dsn.postgres_dsn) as pg2:
+            c = pg2.cursor()
+            c.execute("""SELECT product,version
+                FROM public.items as Items
+                JOIN public.models as Models
+                ON (Items.model_id = Models.Id)
+                WHERE Inventory_Code = %s;""", item_id)
+            rows = c.fetchone()
+            if rows is not None:
+                typ = (rows[0] + " " + rows[1]),
+    except:
+        pass
+    return typ
+
+
 class Sqlite(DB):
     """
     SQLite instance of the DB class
@@ -132,21 +149,9 @@ class Sqlite(DB):
                 c.execute("SELECT item FROM Leihe WHERE returned_time IS NULL")
             items = c.fetchall()
 
-        try:
-            with psycopg2.connect(dsn.postgres_dsn) as pg2:
-                c = pg2.cursor()
-                for i in items:
-                    c.execute("""SELECT product,version
-                        FROM public.items as Items
-                        JOIN public.models as Models
-                        ON (Items.model_id = Models.Id)
-                        WHERE Inventory_Code = %s;""", i)
-                    rows = c.fetchone()
-                    if rows is not None:
-                        typ = (rows[0] + " " + rows[1]),
-                        items[items.index(i)] = items[items.index(i)] + typ
-        except:
-            pass
+            for i in items:
+                items[items.index(i)] = items[items.index(i)] + typ_from_id(i)
+
         return items
 
     def item_usage(self, item_id):
@@ -215,3 +220,4 @@ class Sqlite(DB):
             c.execute('UPDATE Leihe SET returned_time=datetime("now") WHERE item=? AND email=? AND returned_time IS NULL',
                       (item_id,email,))
             conn.commit()
+
