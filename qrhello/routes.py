@@ -39,12 +39,14 @@ def goodbye():
 
     # Again, GET means trying to get the form
     if request.method == 'GET':
-        # Falls nichts mehr offen ist --> huldvolle Verabschiedung & Frage, ob alles okay war --> mailto:tasso.mulzer@beuth-hochschule.de.
+        # Falls nichts mehr offen ist --> huldvolle Verabschiedung & Frage, ob alles okay war
+        # --> mailto:tasso.mulzer@beuth-hochschule.de.
         return render_template("bye.html", name=name, items=sc, not_okay=not_okay)
     else:   # POST // Alles Zurueckgeben
         for item in sc:
             db.return_now(item[0], email)
         return redirect(url_for("goodbye"))
+
 
 @app.route('/l/i/<string:item_id>', methods=['GET', 'POST'])
 def use_item(item_id):
@@ -126,6 +128,13 @@ def use_multi_item(item_id):
 
         # Method is POST, so they're either trying to use the item or take over the item.
         return redirect(url_for('use_multi_item', item_id=item_id))
+
+
+@app.route('/l/u/<string:item_id>', methods=['GET', 'POST'])
+def item_usage():
+    iu = db.still_claimed(overall=True)
+    return render_template('claimed_overall.html', items=sc)
+    pass
 
 
 @app.route('/l/register', methods=['GET', 'POST'])

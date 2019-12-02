@@ -149,6 +149,30 @@ class Sqlite(DB):
             pass
         return items
 
+    def item_usage(self, id):
+        with sqlite3.connect(self.filename) as conn:
+            c = conn.cursor()
+            c.execute("SELECT item FROM Leihe WHERE item=? AND claimed_time BETWEEN date('now', '-7 days') AND "
+                      "datetime('now', 'localtime') ", (id,))
+            items = c.fetchall()
+
+        try:
+            with psycopg2.connect(dsn.postgres_dsn) as pg2:
+                c = pg2.cursor()
+                for i in items:
+                    c.execute("""SELECT product,version
+                        FROM public.items as Items
+                        JOIN public.models as Models
+                        ON (Items.model_id = Models.Id)
+                        WHERE Inventory_Code = %s;""", i)
+                    rows = c.fetchone()
+                    if rows is not None:
+                        typ = (rows[0] + " " + rows[1]),
+                        items[items.index(i)] = items[items.index(i)] + typ
+        except:
+            pass
+        return items
+
     def hello(self, name, email):
         with sqlite3.connect(self.filename) as conn:
             c = conn.cursor()
