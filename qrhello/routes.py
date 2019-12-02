@@ -131,9 +131,9 @@ def use_multi_item(item_id):
 
 
 @app.route('/l/u/<string:item_id>', methods=['GET', 'POST'])
-def item_usage():
-    iu = db.still_claimed(overall=True)
-    return render_template('claimed_overall.html', items=sc)
+def item_use(item_id):
+    iu = db.item_usage(item_id)
+    return render_template('item_usage.html', items=iu)
     pass
 
 
