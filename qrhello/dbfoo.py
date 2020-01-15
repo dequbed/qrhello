@@ -73,6 +73,7 @@ class DB:
 
 
 def typ_from_id(item_id):
+    typ = ''
     try:
         with psycopg2.connect(dsn.postgres_dsn) as pg2:
             c = pg2.cursor()
