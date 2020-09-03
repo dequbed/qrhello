@@ -1,10 +1,13 @@
 import time
 import datetime
 import sqlite3
-import psycopg2
-from influxdb import InfluxDBClient
+#import psycopg2
+#from influxdb import InfluxDBClient
 
 import qrhello.db_dsn as dsn
+
+
+import paho.mqtt.client as mqtt
 
 
 
@@ -190,6 +193,10 @@ class Sqlite(DB):
             c = conn.cursor()
             c.execute('INSERT INTO Leihe VALUES (?, ?, ?, datetime("now"), NULL)', (item_id, name, email))
             conn.commit()
+        
+        client = mqtt.Client()
+        client.connect("141.64.71.69", 1883, 60)
+        client.publish("shellies/" + item_id + "/relay/0/command", "on")
 
     def return_time(self, item_id, when):
         # The 'DB' class just enforces type checks
@@ -198,6 +205,10 @@ class Sqlite(DB):
             c = conn.cursor()
             c.execute('UPDATE Leihe SET returned_time=? WHERE item=? AND returned_time IS NULL', (when, item_id))
             conn.commit()
+
+        client = mqtt.Client()
+        client.connect("141.64.71.69", 1883, 60)
+        client.publish("shellies/" + item_id + "/relay/0/command", "off")
 
     def here_today(self):
         with sqlite3.connect(self.filename) as conn:
@@ -221,4 +232,8 @@ class Sqlite(DB):
             c.execute('UPDATE Leihe SET returned_time=datetime("now") WHERE item=? AND email=? AND returned_time IS NULL',
                       (item_id,email,))
             conn.commit()
+
+        client = mqtt.Client()
+        client.connect("141.64.71.69", 1883, 60)
+        client.publish("shellies/" + item_id + "/relay/0/command", "off")
 
