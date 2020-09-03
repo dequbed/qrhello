@@ -237,3 +237,18 @@ class Sqlite(DB):
         client.connect("141.64.71.69", 1883, 60)
         client.publish("shellies/" + item_id + "/relay/0/command", "off")
 
+    def return_force(self, item_id):
+        """
+        Marks an item as returned without checking the email
+
+        SQLite provides 'time("now")' so we can use that instead of having to convert Python time
+        """
+        with sqlite3.connect(self.filename) as conn:
+            c = conn.cursor()
+            c.execute('UPDATE Leihe SET returned_time=datetime("now") WHERE item=? AND returned_time IS NULL',
+                      (item_id,))
+            conn.commit()
+
+        client = mqtt.Client()
+        client.connect("141.64.71.69", 1883, 60)
+        client.publish("shellies/" + item_id + "/relay/0/command", "off")

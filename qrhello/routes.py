@@ -97,7 +97,8 @@ def return_item(item_id):
     name = request.cookies.get("name")
     # email = request.cookies.get("email")
     if name == 'Tasso' or name == 'Norbert':
-        db.return_now(item_id)
+        db.return_force(item_id)
+    return redirect(url_for("reserved_overall"))
 
 @app.route('/l/m/<string:item_id>', methods=['GET', 'POST'])
 def use_multi_item(item_id):
@@ -222,8 +223,8 @@ def reserved_overall():
     # name = request.cookies.get("name")
     # email = request.cookies.get("email")
     sc = db.still_claimed(overall=True)
-    priv = False
     name = request.cookies.get("name")
+    priv = False
     if name == 'Tasso' or name == 'Norbert':
         priv = True
     return render_template('claimed_overall.html', items=sc, priv=priv)
