@@ -90,6 +90,14 @@ def use_item(item_id):
         # Method is POST, so they're either trying to use the item or take over the item.
         return redirect(url_for('use_item', item_id=item_id))
 
+@app.route('/l/return/<string:item_id>', methods=['GET'])
+def return_item(item_id):
+    if not request.cookies.get("name"):
+        return redirect(url_for("register") + "?return_to=/l/return/" + item_id)
+    name = request.cookies.get("name")
+    # email = request.cookies.get("email")
+    if name == 'Tasso' or name == 'Norbert':
+        db.return_now(item_id)
 
 @app.route('/l/m/<string:item_id>', methods=['GET', 'POST'])
 def use_multi_item(item_id):
@@ -203,7 +211,6 @@ def reserved():
     email = request.cookies.get("email")
     sc = db.still_claimed(email)
     return render_template('claimed.html', name=name, items=sc)
-    pass
 
 @app.route('/l/aufraeumen')
 @app.route('/l/cleanup')
@@ -215,8 +222,11 @@ def reserved_overall():
     # name = request.cookies.get("name")
     # email = request.cookies.get("email")
     sc = db.still_claimed(overall=True)
-    return render_template('claimed_overall.html', items=sc)
-    pass
+    priv = False
+    name = request.cookies.get("name")
+    if name == 'Tasso' or name == 'Norbert':
+        priv = True
+    return render_template('claimed_overall.html', items=sc, priv=priv)
 
 @app.route('/l/anwesend')
 def here_today():

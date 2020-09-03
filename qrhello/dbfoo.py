@@ -1,8 +1,8 @@
 import time
 import datetime
 import sqlite3
-#import psycopg2
-#from influxdb import InfluxDBClient
+import psycopg2
+from influxdb import InfluxDBClient
 
 import qrhello.db_dsn as dsn
 
