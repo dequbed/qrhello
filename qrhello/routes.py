@@ -84,7 +84,6 @@ def use_item(item_id):
                 db.return_now(item_id, email)
                 return redirect(url_for('use_item', item_id=item_id))
 
-        db.return_now(item_id, email)
         db.claim(item_id, name, email)
 
         # Method is POST, so they're either trying to use the item or take over the item.
